@@ -1,8 +1,18 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import Response
+from fastapi.middleware.cors import CORSMiddleware
 from processor import process_image
 
 app = FastAPI(title="Handwriting Synthesizer API")
+
+# 프론트엔드 연동을 위한 CORS 설정 추가
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def read_root():
@@ -11,9 +21,9 @@ def read_root():
 @app.post("/convert")
 async def convert_image(file: UploadFile = File(...)):
     """
-    이미지 파일을 업로드 받아 텍스트를 지우고 폰트를 합성하여 반환합니다.
+    이미지 파일을 업로드 받아 텍스트를 추출하고 손글씨로 렌더링하여 반환합니다.
     """
-    if not file.content_type.startswith("image/"):
+    if file.content_type and not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="File provided is not an image.")
     
     image_bytes = await file.read()
