@@ -10,7 +10,7 @@ def mock_vision_api(image_bytes):
     # 지금은 테스트용으로 긴 문장을 반환합니다.
     return "안녕하세요! 제 삐뚤빼뚤한 손글씨를 인식해서, 정말 제가 정성들여 쓴 것처럼 예쁘고 똑바르게 바꿔주세요. 텍스트로 추출한 뒤에 다시 그리는 마법입니다!"
 
-def process_image(image_bytes: bytes, font_path="C:/Windows/Fonts/malgun.ttf") -> bytes:
+def process_image(image_bytes: bytes, font_path="nanum_pen.ttf") -> bytes:
     # 1. 텍스트 추출 (OCR)
     # image_bytes는 실제로 Vision API로 넘어가서 텍스트를 추출하는 데 사용됩니다.
     extracted_text = mock_vision_api(image_bytes)
